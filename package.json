@@ -1,0 +1,18 @@
+{
+  "name": "goal-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "web",
+    "api",
+    "shared"
+  ],
+  "scripts": {
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
+    "test": "node --test \"test/**/*.test.mjs\" && npm run test --workspaces --if-present"
+  }
+}

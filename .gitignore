@@ -1,0 +1,25 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+CLAUDE.local.md
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+override.tf
+override.tf.json
+
+# Node
+node_modules/
+dist/
+coverage/
+*.log
+
+# OS and editor
+.DS_Store
+.vscode/settings.json
