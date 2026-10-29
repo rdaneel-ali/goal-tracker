@@ -1,5 +1,7 @@
 # 🎯 Goal Tracker
 
+[![CI](https://github.com/rdaneel-ali/goal-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/rdaneel-ali/goal-tracker/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/rdaneel-ali/goal-tracker/actions/workflows/codeql.yml/badge.svg)](https://github.com/rdaneel-ali/goal-tracker/actions/workflows/codeql.yml)
 ![License](https://img.shields.io/github/license/rdaneel-ali/goal-tracker?color=blue)
 ![Node](https://img.shields.io/badge/node-24-339933?logo=nodedotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
