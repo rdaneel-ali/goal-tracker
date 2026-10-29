@@ -17,7 +17,6 @@ A small savings-goal tracker: set a target and date, record deposits and withdra
 - ⚡ API: Node on AWS Lambda
 - 🗄️ Data: DynamoDB
 - 🔐 Auth: Amazon Cognito
-- 🏗️ Infra: Terraform
 - 🟦 Language: TypeScript throughout
 
 ## 📁 Layout
@@ -27,7 +26,6 @@ A small savings-goal tracker: set a target and date, record deposits and withdra
 | `web/` | Front end |
 | `api/` | Lambda API |
 | `shared/` | Types and logic shared by web and api |
-| `infra/` | Terraform |
 
 ## 🚀 Getting started
 

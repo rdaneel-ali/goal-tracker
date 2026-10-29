@@ -2,17 +2,12 @@
 .env
 .env.*
 !.env.example
-*.tfvars
-*.tfvars.json
-!*.tfvars.example
 CLAUDE.local.md
 
-# Terraform
-*.tfstate
-*.tfstate.*
+# Never commit
+*.tfstate*
+*.tfvars
 .terraform/
-override.tf
-override.tf.json
 
 # Node
 node_modules/

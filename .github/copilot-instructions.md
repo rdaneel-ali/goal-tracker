@@ -4,20 +4,22 @@ Source of truth for Copilot guidance in this repo (code review and suggestions).
 
 ## Project
 
-Goal Tracker: savings goals with deposits, withdrawals, and a paycheck-based dashboard. TypeScript throughout. Folders: `web/` (React, Vite, Tailwind), `api/` (Node on Lambda), `shared/` (types and logic), `infra/` (Terraform).
+Goal Tracker: savings goals with deposits, withdrawals, and a paycheck-based dashboard. TypeScript throughout. Folders: `web/` (React, Vite, Tailwind), `api/` (Node on Lambda), `shared/` (types and logic).
 
 ## Code standards
 
 - Keep it simple. Prefer the smallest solution that is correct and readable.
 - Small, modular, reusable functions. Apply DRY, SOA, and AOP; cross-cutting concerns (logging, auth, validation, error handling) belong in one place.
 - Prefer pure, functional code. Isolate side effects (I/O, time, randomness) at the edges so core logic is easy to test.
-- Functions are `verbNoun` in camelCase. Variables are nouns with adjectives. No single-letter names except `i`, `j`, `k` in loops and `e` in catch.
+- Functions are `verbNoun` in camelCase (`calculatePaydaysRemaining`). Variables are nouns with adjectives (`remainingAmountCents`). No single-letter names except `i`, `j`, `k` in loops and `e` in catch.
 - Money is integer cents, never floats. Dates are ISO `YYYY-MM-DD`.
 - Use `strict` TypeScript. Avoid `any`; use `unknown` and narrow.
 - Validate input at the API boundary. Every record carries `user_id`, and every query is scoped to the caller's `user_id`.
 - Never log or store secrets, tokens, or account numbers.
+- No hard-coded account IDs, ARNs, or secrets. Read resource names from env or config.
+- No infrastructure code in this repo. Flag any that appears.
 - Tests: Node's built-in test runner. Unit-test pure logic (balances, paydays, projections). No heavy frameworks.
-- Terraform: least-privilege IAM, no hard-coded account IDs or secrets, no `*.tfvars` or state in git.
+- Follow language and framework best practices. Avoid anti-patterns.
 
 ## Review behavior
 
