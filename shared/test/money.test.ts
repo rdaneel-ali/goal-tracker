@@ -24,6 +24,17 @@ test('isCents narrows unknown input to a number', () => {
   assert.equal(isCents(input) ? input.toFixed(0) : '', '1250')
 })
 
+function describeAmount(value: number | string): string {
+  if (isCents(value)) return 'valid'
+  return typeof value === 'number' ? value.toFixed(1) : value
+}
+
+test('isCents keeps every union member usable when the check fails', () => {
+  assert.equal(describeAmount(1.5), '1.5')
+  assert.equal(describeAmount('abc'), 'abc')
+  assert.equal(describeAmount(100), 'valid')
+})
+
 test('parseDollarsToCents reads the accepted forms', () => {
   const expectedCentsByText: Record<string, number> = {
     '0': 0,

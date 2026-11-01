@@ -1,5 +1,8 @@
 import type { IsoDate } from './types.ts'
 
+// `value is IsoDate` would narrow a failed check's string to never, so the guard targets this private type.
+type ValidIsoDate = IsoDate & { readonly __valid: true }
+
 const MILLISECONDS_PER_DAY = 86_400_000
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 
@@ -11,10 +14,7 @@ function formatMillisecondsAsDate(utcMilliseconds: number): IsoDate {
   return new Date(utcMilliseconds).toISOString().slice(0, 10)
 }
 
-// The string overload stops a failed check from narrowing the caller's string to never.
-export function isIsoDate(value: string): boolean
-export function isIsoDate(value: unknown): value is IsoDate
-export function isIsoDate(value: unknown): boolean {
+export function isIsoDate(value: unknown): value is ValidIsoDate {
   if (typeof value !== 'string' || !ISO_DATE_PATTERN.test(value)) return false
   const utcMilliseconds = parseDateToMilliseconds(value)
   // Date.parse rolls impossible days forward (02-30 becomes 03-02), so compare the round trip.

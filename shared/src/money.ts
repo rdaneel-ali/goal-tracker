@@ -1,13 +1,13 @@
 import type { Cents } from './types.ts'
 
+// `value is Cents` would narrow a failed check's number to never, so the guard targets this private type.
+type ValidCents = Cents & { readonly __valid: true }
+
 const CENTS_PER_DOLLAR = 100
 const DOLLARS_PATTERN = /^\$?(0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)(?:\.(\d{1,2}))?$/
 const USD_FORMATTER = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
-// The number overload stops a failed check from narrowing the caller's number to never.
-export function isCents(value: number): boolean
-export function isCents(value: unknown): value is Cents
-export function isCents(value: unknown): boolean {
+export function isCents(value: unknown): value is ValidCents {
   return Number.isSafeInteger(value)
 }
 

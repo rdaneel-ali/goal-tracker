@@ -31,6 +31,25 @@ test('isIsoDate narrows unknown input to a date string', () => {
   assert.equal(isIsoDate(input) ? input.length : 0, 10)
 })
 
+function describeTextOrNumber(value: string | number): string {
+  if (isIsoDate(value)) return 'valid'
+  return typeof value === 'string' ? value.toUpperCase() : value.toFixed(1)
+}
+
+function describeOptionalText(value: string | undefined): string {
+  if (isIsoDate(value)) return 'valid'
+  return value === undefined ? 'missing' : value.toUpperCase()
+}
+
+test('isIsoDate keeps every union member usable when the check fails', () => {
+  assert.equal(describeTextOrNumber('abc'), 'ABC')
+  assert.equal(describeTextOrNumber(1.5), '1.5')
+  assert.equal(describeTextOrNumber('2026-11-01'), 'valid')
+  assert.equal(describeOptionalText(undefined), 'missing')
+  assert.equal(describeOptionalText('abc'), 'ABC')
+  assert.equal(describeOptionalText('2026-11-01'), 'valid')
+})
+
 test('addDaysToDate moves forward and back across months and years', () => {
   assert.equal(addDaysToDate('2026-11-01', 0), '2026-11-01')
   assert.equal(addDaysToDate('2026-11-01', 14), '2026-11-15')
