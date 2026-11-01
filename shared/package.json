@@ -2,5 +2,17 @@
   "name": "@goal-tracker/shared",
   "version": "0.1.0",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "exports": {
+    "./dates": "./src/dates.ts",
+    "./money": "./src/money.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "test": "tsc -p tsconfig.src.json && tsc -p . && node --test \"test/**/*.test.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "~6.0.3"
+  }
 }
