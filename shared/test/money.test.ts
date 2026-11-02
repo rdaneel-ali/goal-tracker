@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { formatCents, isCents, parseDollarsToCents } from '../src/money.ts'
+import { assertCents, formatCents, isCents, parseDollarsToCents } from '../src/money.ts'
 
 test('isCents accepts safe integers, including zero and negatives', () => {
   for (const value of [0, 1, -1, 123456, Number.MAX_SAFE_INTEGER]) {
@@ -33,6 +33,41 @@ test('isCents keeps every union member usable when the check fails', () => {
   assert.equal(describeAmount(1.5), '1.5')
   assert.equal(describeAmount('abc'), 'abc')
   assert.equal(describeAmount(100), 'valid')
+})
+
+test('assertCents accepts any safe integer by default', () => {
+  for (const value of [0, 1, -1, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER]) {
+    assertCents(value, 'balance')
+  }
+})
+
+test('assertCents throws on anything that is not whole cents and names the value', () => {
+  for (const value of [1.5, Number.NaN, Infinity, -Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(
+      () => {
+        assertCents(value, 'balance')
+      },
+      RangeError,
+      String(value),
+    )
+  }
+  assert.throws(
+    () => {
+      assertCents(1.5, 'balance')
+    },
+    { name: 'RangeError', message: 'Invalid balance: 1.5' },
+  )
+})
+
+test('assertCents enforces the minimum, which is inclusive', () => {
+  assertCents(1, 'amount', 1)
+  assertCents(0, 'amount', 0)
+  assert.throws(() => {
+    assertCents(0, 'amount', 1)
+  }, RangeError)
+  assert.throws(() => {
+    assertCents(-1, 'amount', 0)
+  }, RangeError)
 })
 
 test('parseDollarsToCents reads the accepted forms', () => {

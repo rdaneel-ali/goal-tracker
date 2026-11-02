@@ -11,6 +11,10 @@ export function isCents(value: unknown): value is ValidCents {
   return Number.isSafeInteger(value)
 }
 
+export function assertCents(value: Cents, label: string, minimum: Cents = Number.MIN_SAFE_INTEGER): void {
+  if (!isCents(value) || value < minimum) throw new RangeError(`Invalid ${label}: ${value}`)
+}
+
 export function parseDollarsToCents(text: string): Cents | null {
   const match = DOLLARS_PATTERN.exec(text)
   if (match === null) return null
@@ -22,7 +26,7 @@ export function parseDollarsToCents(text: string): Cents | null {
 }
 
 export function formatCents(cents: Cents): string {
-  if (!isCents(cents)) throw new RangeError(`Invalid cents: ${cents}`)
+  assertCents(cents, 'cents')
   // A decimal string formats exactly, where cents / 100 would pass through a float.
   return USD_FORMATTER.format(`${cents}e-2` as Intl.StringNumericLiteral)
 }
