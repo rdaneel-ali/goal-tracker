@@ -9,6 +9,10 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # typescript-eslint doesn't support TypeScript 6.1 or newer yet.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
 
   - package-ecosystem: github-actions
     directory: /
@@ -18,4 +22,4 @@ updates:
       prefix: Update
     groups:
       actions:
-        patterns: ["*"]
+        patterns: ['*']

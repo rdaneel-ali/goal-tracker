@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "17 5 * * 1"
+    - cron: '17 5 * * 1'
 
 permissions:
   contents: read

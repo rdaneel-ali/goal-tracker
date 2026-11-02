@@ -9,13 +9,31 @@ test('isIsoDate accepts real calendar dates', () => {
 })
 
 test('isIsoDate rejects dates that do not exist', () => {
-  for (const value of ['2026-02-29', '2026-02-30', '2026-02-31', '2026-04-31', '2026-13-01', '2026-00-10', '2026-01-00']) {
+  for (const value of [
+    '2026-02-29',
+    '2026-02-30',
+    '2026-02-31',
+    '2026-04-31',
+    '2026-13-01',
+    '2026-00-10',
+    '2026-01-00',
+  ]) {
     assert.equal(isIsoDate(value), false, value)
   }
 })
 
 test('isIsoDate rejects other formats and non-strings', () => {
-  const rejectedValues = ['', '2026-1-1', '11/01/2026', '2026-11-01T00:00:00Z', ' 2026-11-01', '2026-11-01\n', 20261101, null, undefined]
+  const rejectedValues = [
+    '',
+    '2026-1-1',
+    '11/01/2026',
+    '2026-11-01T00:00:00Z',
+    ' 2026-11-01',
+    '2026-11-01\n',
+    20261101,
+    null,
+    undefined,
+  ]
   for (const value of rejectedValues) {
     assert.equal(isIsoDate(value), false, JSON.stringify(value))
   }
@@ -76,7 +94,10 @@ test('addDaysToDate throws on an invalid date instead of rolling it forward', ()
 })
 
 test('the invalid date error escapes the input so it cannot forge log lines', () => {
-  assert.throws(() => addDaysToDate('x\nforged line', 1), { name: 'RangeError', message: 'Invalid ISO date: "x\\nforged line"' })
+  assert.throws(() => addDaysToDate('x\nforged line', 1), {
+    name: 'RangeError',
+    message: 'Invalid ISO date: "x\\nforged line"',
+  })
 })
 
 test('addDaysToDate throws on a day count that is not a whole number', () => {

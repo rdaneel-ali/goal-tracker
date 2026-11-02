@@ -58,7 +58,21 @@ test('parseDollarsToCents stays exact where float math would drift', () => {
 })
 
 test('parseDollarsToCents returns null instead of guessing or rounding', () => {
-  const rejectedTexts = ['', ' ', 'abc', '-12.34', '12.345', '12.', '1,23', '12,34.56', '1.2.3', '$', '$$12', ' 12', '12 ']
+  const rejectedTexts = [
+    '',
+    ' ',
+    'abc',
+    '-12.34',
+    '12.345',
+    '12.',
+    '1,23',
+    '12,34.56',
+    '1.2.3',
+    '$',
+    '$$12',
+    ' 12',
+    '12 ',
+  ]
   for (const text of rejectedTexts) {
     assert.equal(parseDollarsToCents(text), null, JSON.stringify(text))
   }
