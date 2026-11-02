@@ -13,6 +13,17 @@
   ],
   "scripts": {
     "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
-    "test": "node --test \"test/**/*.test.mjs\" && npm run test --workspaces --if-present"
+    "test": "node --test \"test/**/*.test.mjs\" && npm run test --workspaces --if-present",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "3.9.10",
+    "typescript-eslint": "^8.72.1"
   }
 }
