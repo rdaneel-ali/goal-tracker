@@ -6,6 +6,7 @@
   "exports": {
     "./dates": "./src/dates.ts",
     "./money": "./src/money.ts",
+    "./paydays": "./src/paydays.ts",
     "./types": "./src/types.ts"
   },
   "scripts": {
