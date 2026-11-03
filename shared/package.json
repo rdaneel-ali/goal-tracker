@@ -6,6 +6,7 @@
   "exports": {
     "./balance": "./src/balance.ts",
     "./dates": "./src/dates.ts",
+    "./lifecycle": "./src/lifecycle.ts",
     "./money": "./src/money.ts",
     "./paydays": "./src/paydays.ts",
     "./types": "./src/types.ts"
