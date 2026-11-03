@@ -13,6 +13,9 @@ updates:
       # typescript-eslint doesn't support TypeScript 6.1 or newer yet.
       - dependency-name: typescript
         update-types: ['version-update:semver-major', 'version-update:semver-minor']
+      # Lambda runs Node 24 (.nvmrc). Remove this when the runtime moves.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: /
