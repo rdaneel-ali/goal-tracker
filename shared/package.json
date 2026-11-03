@@ -9,6 +9,7 @@
     "./lifecycle": "./src/lifecycle.ts",
     "./money": "./src/money.ts",
     "./paydays": "./src/paydays.ts",
+    "./projection": "./src/projection.ts",
     "./types": "./src/types.ts"
   },
   "scripts": {
