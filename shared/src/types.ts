@@ -14,7 +14,7 @@ export type CompletionReason = (typeof COMPLETION_REASONS)[number]
 export const ENTRY_TYPES = ['deposit', 'withdrawal'] as const
 export type EntryType = (typeof ENTRY_TYPES)[number]
 
-export const ENTRY_SOURCES = ['manual', 'csv_import', 'carryover'] as const
+export const ENTRY_SOURCES = ['manual', 'carryover'] as const
 export type EntrySource = (typeof ENTRY_SOURCES)[number]
 
 export const PAY_CADENCES = ['biweekly'] as const
@@ -66,7 +66,6 @@ export interface Entry {
   date: IsoDate
   note?: string
   source: EntrySource
-  import_batch_id?: string
   created_at: IsoTimestamp
   updated_at: IsoTimestamp
 }
