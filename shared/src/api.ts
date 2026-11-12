@@ -1,6 +1,7 @@
 import type { Bucket, Cents, Entry, Goal, IsoDate, LinkedItem, Settings } from './types.ts'
 
-// PATCH bodies follow JSON Merge Patch (RFC 7396): an omitted field is unchanged, and null clears an optional field.
+// In PATCH bodies an omitted field is unchanged and null clears an optional field.
+// An object field such as linked_item is replaced whole, never merged.
 type Clearable<T> = T | null
 
 export interface GoalStats {
