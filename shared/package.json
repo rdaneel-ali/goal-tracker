@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./api": "./src/api.ts",
     "./balance": "./src/balance.ts",
     "./dates": "./src/dates.ts",
     "./lifecycle": "./src/lifecycle.ts",
