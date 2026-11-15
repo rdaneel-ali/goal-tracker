@@ -9,7 +9,7 @@
     "./dates": "./src/dates.ts",
     "./lifecycle": "./src/lifecycle.ts",
     "./money": "./src/money.ts",
-    "./paydays": "./src/paydays.ts",
+    "./price-watch": "./src/price-watch.ts",
     "./projection": "./src/projection.ts",
     "./types": "./src/types.ts"
   },

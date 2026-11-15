@@ -1,0 +1,19 @@
+{
+  "watch_id": "w_01",
+  "name": "Mac mini, 32GB/512GB",
+  "target_price": 149900,
+  "checked_at": "2026-11-14T14:00:00Z",
+  "check_ok": true,
+  "best": {
+    "title": "Refurbished Mac mini, M6, 32GB, 512GB",
+    "price": 135900,
+    "condition": "refurbished",
+    "url": "https://example.com/listing",
+    "source_name": "Apple refurbished: Mac mini",
+    "meets_target": true,
+    "suspicious": false,
+    "suspicious_reason": null,
+    "status": "found",
+    "seen_at": "2026-11-14T14:00:00Z"
+  }
+}

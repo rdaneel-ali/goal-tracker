@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![Status](https://img.shields.io/badge/status-early%20development-orange)
 
-A small savings-goal tracker: set a target and date, record deposits and withdrawals, and see whether you are on pace for your paydays.
+A small savings-goal tracker: save toward a goal in a bucket of money, record deposits and withdrawals, see your projected finish, and find out when what you have saved already covers a good deal on the thing you want.
 
 > 🚧 Early development. Not yet usable.
 
