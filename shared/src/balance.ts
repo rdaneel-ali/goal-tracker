@@ -1,14 +1,14 @@
 import { assertCents } from './money.ts'
-import type { Cents, Entry, Goal } from './types.ts'
+import type { Bucket, Cents, Entry } from './types.ts'
 
 export function calculateBalance(
-  goal: Pick<Goal, 'goal_id' | 'opening_balance'>,
-  entries: readonly Pick<Entry, 'goal_id' | 'type' | 'amount'>[],
+  bucket: Pick<Bucket, 'bucket_id'>,
+  entries: readonly Pick<Entry, 'bucket_id' | 'type' | 'amount'>[],
 ): Cents {
-  assertCents(goal.opening_balance, 'opening balance', 0)
-  let balance: Cents = goal.opening_balance
+  let balance: Cents = 0
   for (const entry of entries) {
-    if (entry.goal_id !== goal.goal_id) throw new RangeError(`Entry belongs to another goal: ${entry.goal_id}`)
+    if (entry.bucket_id !== bucket.bucket_id)
+      throw new RangeError(`Entry belongs to another bucket: ${entry.bucket_id}`)
     assertCents(entry.amount, 'entry amount', 1)
     // Widened because the type is only trusted at compile time.
     const entryType: string = entry.type

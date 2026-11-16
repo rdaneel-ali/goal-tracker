@@ -4,7 +4,7 @@ Working agreements for Claude Code in this repo. This file is public. Keep priva
 
 ## Project
 
-Goal Tracker: savings goals, deposits and withdrawals, and a paycheck-based dashboard. TypeScript everywhere: React + Vite + Tailwind (`web/`), Node on Lambda (`api/`), shared types and logic (`shared/`). npm workspaces monorepo.
+Goal Tracker: savings goals backed by buckets of money, deposits and withdrawals, and a best price from Price Watch next to each goal. TypeScript everywhere: React + Vite + Tailwind (`web/`), Node on Lambda (`api/`), shared types and logic (`shared/`). npm workspaces monorepo.
 
 ## Guardrails
 
@@ -13,7 +13,7 @@ Goal Tracker: savings goals, deposits and withdrawals, and a paycheck-based dash
 - Stop at each step marker and wait for the user.
 - Keep changes small and reviewable.
 - Never commit, push, or create a PR unless the user says so. The user may commit from VS Code Source Control.
-- Commit messages: `Verb: short desc` (e.g. `Add: repo scaffold`, `Fix: payday count`). The description may include a version number but never repeats the verb.
+- Commit messages: `Verb: short desc` (e.g. `Add: repo scaffold`, `Fix: projection rounding`). The description may include a version number but never repeats the verb.
 - The user pastes only the last 20-30 lines of error output.
 - When the session is getting long, say so and give a handoff playbook: decisions, pending, open options with recommendations, next steps. Minimal prose.
 - Never create, change or delete cloud resources without the user's explicit OK.

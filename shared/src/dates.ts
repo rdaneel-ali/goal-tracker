@@ -38,3 +38,17 @@ export function countDaysBetweenDates(startDate: IsoDate, endDate: IsoDate): num
   assertIsoDate(endDate)
   return (parseDateToMilliseconds(endDate) - parseDateToMilliseconds(startDate)) / MILLISECONDS_PER_DAY
 }
+
+// UTC only, as Price Watch sends it. Up to 9 fractional digits; milliseconds are kept.
+const ISO_TIMESTAMP_PATTERN = /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.(\d{1,9}))?Z$/
+
+// Returns null for anything that isn't a real UTC timestamp, such as February 30 or a missing Z.
+export function parseTimestampToMilliseconds(value: unknown): number | null {
+  if (typeof value !== 'string') return null
+  const match = ISO_TIMESTAMP_PATTERN.exec(value)
+  if (match === null) return null
+  const [, date = '', hours = '', minutes = '', seconds = '', fraction = ''] = match
+  if (!isIsoDate(date)) return null
+  const milliseconds = fraction.padEnd(3, '0').slice(0, 3)
+  return Date.parse(`${date}T${hours}:${minutes}:${seconds}.${milliseconds}Z`)
+}

@@ -3,81 +3,66 @@ import { test } from 'node:test'
 import { calculateBalance, calculateProgress, calculateRemaining, isWithdrawalOverBalance } from '../src/balance.ts'
 import type { Entry, EntryType } from '../src/types.ts'
 
-type EntryInput = Pick<Entry, 'goal_id' | 'type' | 'amount'>
+type EntryInput = Pick<Entry, 'bucket_id' | 'type' | 'amount'>
 
 const MAX = Number.MAX_SAFE_INTEGER
 const badAmounts = [0, -1, 1.5, Number.NaN, Infinity, -Infinity, MAX + 1]
-
-function makeGoal(openingBalance: number) {
-  return { goal_id: 'goal-1', opening_balance: openingBalance }
-}
+const bucket = { bucket_id: 'bucket-1' }
 
 function makeEntry(entryType: EntryType, amount: number): EntryInput {
-  return { goal_id: 'goal-1', type: entryType, amount }
+  return { bucket_id: 'bucket-1', type: entryType, amount }
 }
 
-test('calculateBalance is the opening balance when there are no entries', () => {
-  assert.equal(calculateBalance(makeGoal(0), []), 0)
-  assert.equal(calculateBalance(makeGoal(50000), []), 50000)
+test('calculateBalance is 0 when there are no entries', () => {
+  assert.equal(calculateBalance(bucket, []), 0)
 })
 
 test('calculateBalance adds deposits and subtracts withdrawals', () => {
   const entries = [makeEntry('deposit', 10000), makeEntry('deposit', 2550), makeEntry('withdrawal', 3000)]
-  assert.equal(calculateBalance(makeGoal(50000), entries), 59550)
+  assert.equal(calculateBalance(bucket, entries), 9550)
 })
 
 test('calculateBalance can go negative, and lands on exactly zero', () => {
-  assert.equal(calculateBalance(makeGoal(1000), [makeEntry('withdrawal', 1500)]), -500)
-  assert.equal(calculateBalance(makeGoal(1000), [makeEntry('withdrawal', 1000)]), 0)
+  assert.equal(calculateBalance(bucket, [makeEntry('deposit', 1000), makeEntry('withdrawal', 1500)]), -500)
+  assert.equal(calculateBalance(bucket, [makeEntry('deposit', 1000), makeEntry('withdrawal', 1000)]), 0)
 })
 
 test('calculateBalance stays exact where float math would drift', () => {
   const entries = Array.from({ length: 10 }, () => makeEntry('deposit', 10))
-  assert.equal(calculateBalance(makeGoal(0), entries), 100)
+  assert.equal(calculateBalance(bucket, entries), 100)
 })
 
-test('calculateBalance throws on an entry from another goal', () => {
-  const foreignEntry: EntryInput = { goal_id: 'goal-2', type: 'deposit', amount: 900 }
-  assert.throws(() => calculateBalance(makeGoal(0), [makeEntry('deposit', 100), foreignEntry]), RangeError)
+test('calculateBalance throws on an entry from another bucket', () => {
+  const foreignEntry: EntryInput = { bucket_id: 'bucket-2', type: 'deposit', amount: 900 }
+  assert.throws(() => calculateBalance(bucket, [makeEntry('deposit', 100), foreignEntry]), RangeError)
 })
 
 test('calculateBalance throws on any entry amount that is not above 0', () => {
   for (const amount of badAmounts) {
-    assert.throws(() => calculateBalance(makeGoal(0), [makeEntry('deposit', amount)]), RangeError, String(amount))
-    assert.throws(() => calculateBalance(makeGoal(0), [makeEntry('withdrawal', amount)]), RangeError, String(amount))
+    assert.throws(() => calculateBalance(bucket, [makeEntry('deposit', amount)]), RangeError, String(amount))
+    assert.throws(() => calculateBalance(bucket, [makeEntry('withdrawal', amount)]), RangeError, String(amount))
   }
 })
 
 test('calculateBalance throws on an entry type that is neither deposit nor withdrawal', () => {
   for (const entryType of ['transfer', 'Deposit', '', undefined, null]) {
     const entry = makeEntry(entryType as EntryType, 100)
-    assert.throws(() => calculateBalance(makeGoal(1000), [entry]), RangeError, String(entryType))
-  }
-})
-
-test('calculateBalance throws on an opening balance that is not a non-negative integer', () => {
-  for (const openingBalance of [-1, 1.5, Number.NaN, Infinity, MAX + 1]) {
-    assert.throws(() => calculateBalance(makeGoal(openingBalance), []), RangeError, String(openingBalance))
+    assert.throws(() => calculateBalance(bucket, [entry]), RangeError, String(entryType))
   }
 })
 
 test('calculateBalance accepts the top of the safe integer range', () => {
-  assert.equal(calculateBalance(makeGoal(MAX - 1), [makeEntry('deposit', 1)]), MAX)
-  assert.equal(calculateBalance(makeGoal(MAX), []), MAX)
+  assert.equal(calculateBalance(bucket, [makeEntry('deposit', MAX - 1), makeEntry('deposit', 1)]), MAX)
 })
 
 test('calculateBalance throws when a running total leaves the safe integer range', () => {
-  assert.throws(() => calculateBalance(makeGoal(MAX), [makeEntry('deposit', 1)]), RangeError)
-  assert.throws(() => calculateBalance(makeGoal(0), [makeEntry('deposit', MAX), makeEntry('deposit', 1)]), RangeError)
-  assert.throws(
-    () => calculateBalance(makeGoal(0), [makeEntry('withdrawal', MAX), makeEntry('withdrawal', 1)]),
-    RangeError,
-  )
+  assert.throws(() => calculateBalance(bucket, [makeEntry('deposit', MAX), makeEntry('deposit', 1)]), RangeError)
+  assert.throws(() => calculateBalance(bucket, [makeEntry('withdrawal', MAX), makeEntry('withdrawal', 1)]), RangeError)
 })
 
 test('calculateBalance checks every step, not just the final total', () => {
   const entries = [makeEntry('deposit', MAX), makeEntry('deposit', MAX), makeEntry('withdrawal', MAX)]
-  assert.throws(() => calculateBalance(makeGoal(0), entries), RangeError)
+  assert.throws(() => calculateBalance(bucket, entries), RangeError)
 })
 
 test('calculateRemaining is target minus balance', () => {

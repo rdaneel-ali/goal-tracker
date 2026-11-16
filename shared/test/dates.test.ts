@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { addDaysToDate, countDaysBetweenDates, isIsoDate } from '../src/dates.ts'
+import { addDaysToDate, countDaysBetweenDates, isIsoDate, parseTimestampToMilliseconds } from '../src/dates.ts'
 
 test('isIsoDate accepts real calendar dates', () => {
   for (const value of ['2026-11-01', '2024-02-29', '2026-12-31', '2027-01-01']) {
@@ -133,4 +133,36 @@ test('countDaysBetweenDates is negative when the end is before the start', () =>
 test('countDaysBetweenDates is not shifted by daylight saving changes', () => {
   assert.equal(countDaysBetweenDates('2026-03-01', '2026-03-15'), 14)
   assert.equal(countDaysBetweenDates('2026-10-25', '2026-11-08'), 14)
+})
+
+test('parseTimestampToMilliseconds reads UTC timestamps, with or without a fraction', () => {
+  assert.equal(parseTimestampToMilliseconds('2026-11-14T14:00:00Z'), Date.UTC(2026, 10, 14, 14))
+  assert.equal(parseTimestampToMilliseconds('2026-11-14T14:00:00.5Z'), Date.UTC(2026, 10, 14, 14, 0, 0, 500))
+  assert.equal(parseTimestampToMilliseconds('2026-11-14T14:00:00.123456Z'), Date.UTC(2026, 10, 14, 14, 0, 0, 123))
+  assert.equal(parseTimestampToMilliseconds('0000-01-01T00:00:00Z'), Date.parse('0000-01-01T00:00:00.000Z'))
+  assert.equal(parseTimestampToMilliseconds('9999-12-31T23:59:59.999Z'), Date.UTC(9999, 11, 31, 23, 59, 59, 999))
+})
+
+test('parseTimestampToMilliseconds returns null for anything else', () => {
+  const badValues = [
+    undefined,
+    null,
+    1731592800000,
+    '',
+    '2026-11-14',
+    '2026-11-14T14:00:00',
+    '2026-11-14T14:00Z',
+    '2026-11-14T14:00:00+00:00',
+    '2026-11-14 14:00:00Z',
+    '2026-02-30T14:00:00Z',
+    '2026-11-14T24:00:00Z',
+    '2026-11-14T14:60:00Z',
+    '2026-11-14T14:00:60Z',
+    '2026-11-14T14:00:00.Z',
+    '2026-11-14T14:00:00.1234567890Z',
+    '2026-11-14t14:00:00z',
+  ]
+  for (const value of badValues) {
+    assert.equal(parseTimestampToMilliseconds(value), null, String(value))
+  }
 })
