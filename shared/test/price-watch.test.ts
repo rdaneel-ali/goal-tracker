@@ -114,6 +114,18 @@ test('parseBestResponse returns null when a listing field is missing or wrong', 
       'https://exa\u202emple.com/x',
       'https://example.com/\u200b',
       'https://exa\tmple.com',
+      'https://%',
+      'https://example.com:abc/l',
+      'https://example.com:99999/l',
+      'https://example.com:65536/l',
+      'https://example.com:0/l',
+      'https://example.com:/l',
+      'https://.example.com/l',
+      'https://[::1/',
+      'https://[::1]/l',
+      'https://1.2.3.4/l',
+      'https://example.123/l',
+      'https://a..b/l',
     ],
     source_name: [undefined, 1],
     meets_target: [undefined, 'yes'],
@@ -126,6 +138,21 @@ test('parseBestResponse returns null when a listing field is missing or wrong', 
     for (const value of values) {
       assert.equal(parseBestResponse(withBest({ [field]: value })), null, `${field}: ${String(value)}`)
     }
+  }
+})
+
+test('parseBestResponse accepts ordinary https listing URLs', () => {
+  for (const url of [
+    'https://example.com',
+    'https://shop.example.com:443/item?id=1#reviews',
+    'https://example.com:65535/l',
+    'https://example.com?id=1',
+    'https://example.com#reviews',
+    'https://EXAMPLE.com./l',
+    'https://my_shop.example.co.uk/l',
+    'https://xn--bcher-kva.example/l',
+  ]) {
+    assert.notEqual(parseBestResponse(withBest({ url })), null, url)
   }
 })
 

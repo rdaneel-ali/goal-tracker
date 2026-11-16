@@ -84,10 +84,18 @@ function isOneOf<T extends string>(options: readonly T[], value: unknown): value
 // A pattern, not URL, keeps this module free of environment types; the literal scheme is what blocks script links.
 // Backslashes, control and invisible format characters are refused too: browsers read a backslash as a slash,
 // which would move the host, and a format character such as a right-to-left override can disguise it.
-const HTTPS_URL_PATTERN = /^https:\/\/[^\s/?#@\\\p{Cc}\p{Cf}]+(?:[/?#][^\s\\\p{Cc}\p{Cf}]*)?$/u
+// The host is a domain name whose last label starts with a letter, so IP literals and anything URL would refuse
+// are out; a non-ASCII host must come in its xn-- form. The port is checked against 1 to 65535 below.
+const HTTPS_URL_PATTERN = /^https:\/\/(?:[\w-]+\.)*[A-Za-z][\w-]*\.?(?::(\d{1,5}))?(?:[/?#][^\s\\\p{Cc}\p{Cf}]*)?$/u
+const MIN_PORT = 1
+const MAX_PORT = 65535
 
 function isHttpsUrl(value: unknown): value is string {
-  return typeof value === 'string' && HTTPS_URL_PATTERN.test(value)
+  if (typeof value !== 'string') return false
+  const match = HTTPS_URL_PATTERN.exec(value)
+  if (match === null) return false
+  const port = match[1]
+  return port === undefined || (Number(port) >= MIN_PORT && Number(port) <= MAX_PORT)
 }
 
 // Copies only known fields, so extra fields Price Watch adds later never reach the cache.
